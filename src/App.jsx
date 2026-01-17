@@ -1,19 +1,11 @@
 function App() {
   return (
-    <main
-      style={{
-        height: '100vh',
-        width: '100vw',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        textAlign: 'center',
-        fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
-      }}
-    >
-      <div>
-        <h1 style={{ marginBottom: '0.5rem' }}>Under Maintenance</h1>
-        <p style={{ color: '#666' }}>
+    <main className="min-h-screen w-screen flex items-center justify-center text-center font-sans bg-white">
+      <div className="px-6">
+        <h1 className="mb-2 text-3xl font-semibold text-gray-900">
+          Under Maintenance
+        </h1>
+        <p className="text-gray-500">
           This page is currently being worked on. Please check back soon.
         </p>
       </div>
