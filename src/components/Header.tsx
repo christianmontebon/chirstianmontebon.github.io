@@ -17,8 +17,8 @@ export default function Header({ activeSection, onNavigate }: HeaderProps) {
           Web Developer
         </h2>
         <p className="text-muted-foreground mt-4 max-w-sm leading-relaxed">
-          I build clean, reliable web applications with a strong focus on
-          usability, maintainability, and real-world business needs.
+          I build straightforward, maintainable web applications that hold up in
+          real production use.
         </p>
 
         <Navigation activeSection={activeSection} onNavigate={onNavigate} />

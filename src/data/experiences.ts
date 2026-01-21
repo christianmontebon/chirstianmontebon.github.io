@@ -14,7 +14,7 @@ export const experiences: Experience[] = [
     company: 'Luminous',
     url: 'https://www.joinluminous.com',
     description:
-      'At Luminous, I worked on a large-scale web application used by businesses to manage operations and third-party integrations. I built and maintained features using Angular and Laravel, developed an internal UI component library, and created reusable backend packages to support multiple integrations. I worked closely with designers, product managers, and other engineers, with a strong focus on maintainable code, performance, and long-term scalability.',
+      'At Luminous, I worked on a large-scale web application used by businesses to manage operations and third-party integrations. A significant part of my work involved building and maintaining integrations with external OMS, 3PL, and POS systems, alongside developing product features using Angular and Laravel. I also helped maintain an internal UI component library and created reusable backend packages to support multiple integrations, with a strong focus on reliability, maintainability, and long-term scalability.',
     technologies: ['Angular', 'Laravel', 'TypeScript', 'PHP', 'MySQL'],
   },
   {

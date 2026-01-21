@@ -10,23 +10,22 @@ export default function About({ sectionRef }: AboutProps) {
       </h2>
       <div className="space-y-4 text-muted-foreground leading-relaxed">
         <p>
-          I'm a web developer based in Cagayan de Oro City, Philippines, with
+          I’m a web developer based in Cagayan de Oro City, Philippines, with
           experience working remotely with international teams. Over the years,
-          I've worked on a wide range of projects, from content-driven websites
+          I’ve worked on a wide range of projects, from content-driven websites
           to large, data-heavy web applications used in production.
         </p>
         <p>
-          My work sits at the intersection of frontend and backend development.
-          I enjoy building interfaces that feel natural to use while making sure
-          the systems behind them are scalable and easy to maintain. I've spent
-          most of my career working with JavaScript frameworks and PHP-based
-          backends, collaborating closely with designers, product managers, and
-          other engineers.
+          My experience sits across frontend and backend development, where I’ve
+          worked on features, workflows, and integrations that support real
+          business operations. I tend to focus on clarity and maintainability,
+          especially when systems grow and requirements change.
         </p>
         <p>
-          Outside of work, I enjoy refining my workflows, learning new tools,
-          and continuously improving how I approach problem-solving in both code
-          and design.
+          Outside of work, I spend time improving my workflows, experimenting
+          with new tools, and automating small, repetitive tasks. I enjoy
+          finding practical ways to reduce friction and keep projects manageable
+          over time.
         </p>
       </div>
     </section>

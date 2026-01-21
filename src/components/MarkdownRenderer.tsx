@@ -78,13 +78,10 @@ export default function MarkdownRenderer() {
           </div>
           {(date || tags.length > 0) && (
             <div className="space-y-2">
-              {date && (
-                <p className="text-sm text-muted-foreground">{date}</p>
-              )}
+              {date && <p className="text-sm text-muted-foreground">{date}</p>}
               {tags.length > 0 && (
                 <p className="text-xs text-muted-foreground italic">
-                  <span className="font-medium">tags:</span>{' '}
-                  {tags.join(', ')}
+                  <span className="font-medium">tags:</span> {tags.join(', ')}
                 </p>
               )}
             </div>
@@ -150,10 +147,7 @@ export default function MarkdownRenderer() {
                 <hr className="my-10 border-border" {...props} />
               ),
               table: ({ node, ...props }) => (
-                <table
-                  className="w-full border-collapse text-sm"
-                  {...props}
-                />
+                <table className="w-full border-collapse text-sm" {...props} />
               ),
               thead: ({ node, ...props }) => (
                 <thead className="text-foreground" {...props} />
