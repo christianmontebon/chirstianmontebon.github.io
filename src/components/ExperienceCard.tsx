@@ -1,6 +1,6 @@
 import { ArrowUpRight } from 'lucide-react'
 import { experiences } from '../data/experiences'
-import Tag from './Tag'
+import Badge from './Badge'
 
 interface ExperienceCardProps {
   experience: (typeof experiences)[0]
@@ -36,7 +36,7 @@ export default function ExperienceCard({
           </p>
           <div className="flex flex-wrap gap-2 mt-3">
             {experience.technologies.map(technology => (
-              <Tag key={technology}>{technology}</Tag>
+              <Badge key={technology}>{technology}</Badge>
             ))}
           </div>
         </div>

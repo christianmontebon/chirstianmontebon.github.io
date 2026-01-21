@@ -1,11 +1,11 @@
 import type { ReactNode } from 'react'
 
-interface TagProps {
+interface BadgeProps {
   children: ReactNode
   className?: string
 }
 
-export default function Tag({ children, className }: TagProps) {
+export default function Badge({ children, className }: BadgeProps) {
   const baseClasses =
     'relative inline-flex items-center text-xs px-2.5 py-1 rounded-full ' +
     'text-foreground/85 border border-emerald-400/30 dark:border-emerald-300/25 ' +
