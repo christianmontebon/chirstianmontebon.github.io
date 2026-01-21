@@ -25,7 +25,7 @@ export default function Header({ activeSection, onNavigate }: HeaderProps) {
       </div>
 
       {/* Social Links */}
-      <div className="flex gap-5 mt-8 lg:mt-0 py-8 lg:py-0">
+      <div className="flex gap-5 mb-8 md:mb-0 lg:mb-0 py-8 lg:py-0">
         <a
           href="https://github.com/christianmontebon"
           target="_blank"

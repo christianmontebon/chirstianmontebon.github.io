@@ -1,6 +1,15 @@
-export const experiences = [
+export type Experience = {
+  period: string
+  title: string
+  company: string
+  url: string
+  description: string
+  technologies: string[]
+}
+
+export const experiences: Experience[] = [
   {
-    period: '2021 — 2024',
+    period: '2021 — Present',
     title: 'Web Developer',
     company: 'Luminous',
     url: 'https://www.joinluminous.com',
