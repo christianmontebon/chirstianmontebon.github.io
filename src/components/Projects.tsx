@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { ArrowUpRight } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { projects } from '../data/projects'
 import ProjectCard from './ProjectCard'
 
@@ -9,6 +10,7 @@ interface ProjectsProps {
 
 export default function Projects({ sectionRef }: ProjectsProps) {
   const [hoveredProject, setHoveredProject] = useState<number | null>(null)
+  const displayedProjects = projects.slice(0, 5)
 
   return (
     <section id="projects" ref={sectionRef} className="mb-24 scroll-mt-24">
@@ -18,7 +20,7 @@ export default function Projects({ sectionRef }: ProjectsProps) {
       <div
         className={`space-y-2 ${hoveredProject !== null ? 'children-dimmed' : ''}`}
       >
-        {projects.map((project, index) => (
+        {displayedProjects.map((project, index) => (
           <ProjectCard
             key={index}
             project={project}
@@ -27,13 +29,13 @@ export default function Projects({ sectionRef }: ProjectsProps) {
           />
         ))}
       </div>
-      <a
-        href="/projects"
+      <Link
+        to="/projects"
         className="inline-flex items-center gap-1 mt-8 text-foreground font-medium hover:text-foreground/80 transition-colors group"
       >
         View Full Project Archive
         <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-      </a>
+      </Link>
     </section>
   )
 }

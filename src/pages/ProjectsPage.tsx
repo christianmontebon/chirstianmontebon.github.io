@@ -6,8 +6,9 @@ export default function ProjectsPage() {
     title: p.title,
     slug: p.url, // external link
     description: p.description,
-    topics: p.topics,
+    scope: p.scope,
     tools: p.tools,
+    image: p.image,
   }))
 
   return (

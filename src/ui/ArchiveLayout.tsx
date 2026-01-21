@@ -6,8 +6,9 @@ interface ArchiveItem {
   slug: string
   date?: string
   description?: string
-  topics?: string[]
+  scope?: string
   tools?: string[]
+  image?: string
 }
 
 interface ArchiveLayoutProps {
@@ -15,7 +16,7 @@ interface ArchiveLayoutProps {
   description?: string
   items: ArchiveItem[]
   basePath?: string // when provided, href becomes `${basePath}/${slug}` unless slug is an absolute URL
-  showFilters?: boolean // enable filtering by topics/tools
+  showFilters?: boolean // enable filtering by scope/tools
 }
 
 export default function ArchiveLayout({
@@ -26,9 +27,9 @@ export default function ArchiveLayout({
   showFilters = false,
 }: ArchiveLayoutProps) {
   const [selectedTools, setSelectedTools] = useState<string[]>([])
-  const [selectedTopics, setSelectedTopics] = useState<string[]>([])
+  const [selectedScopes, setSelectedScopes] = useState<string[]>([])
 
-  // Extract all unique tools and topics
+  // Extract all unique tools and scopes
   const allTools = useMemo(() => {
     const tools = new Set<string>()
     items.forEach(item => {
@@ -37,12 +38,12 @@ export default function ArchiveLayout({
     return Array.from(tools).sort()
   }, [items])
 
-  const allTopics = useMemo(() => {
-    const topics = new Set<string>()
+  const allScopes = useMemo(() => {
+    const scopes = new Set<string>()
     items.forEach(item => {
-      item.topics?.forEach(topic => topics.add(topic))
+      if (item.scope) scopes.add(item.scope)
     })
-    return Array.from(topics).sort()
+    return Array.from(scopes).sort()
   }, [items])
 
   // Filter items based on selected filters
@@ -52,13 +53,13 @@ export default function ArchiveLayout({
       if (selectedTools.length > 0 && !item.tools?.some(tool => selectedTools.includes(tool))) {
         return false
       }
-      // If topics are selected, item must have at least one selected topic
-      if (selectedTopics.length > 0 && !item.topics?.some(topic => selectedTopics.includes(topic))) {
+      // If scopes are selected, item must match one of the selected scopes
+      if (selectedScopes.length > 0 && (!item.scope || !selectedScopes.includes(item.scope))) {
         return false
       }
       return true
     })
-  }, [items, selectedTools, selectedTopics])
+  }, [items, selectedTools, selectedScopes])
 
   const toggleTool = (tool: string) => {
     setSelectedTools(prev =>
@@ -66,15 +67,15 @@ export default function ArchiveLayout({
     )
   }
 
-  const toggleTopic = (topic: string) => {
-    setSelectedTopics(prev =>
-      prev.includes(topic) ? prev.filter(t => t !== topic) : [...prev, topic]
+  const toggleScope = (scope: string) => {
+    setSelectedScopes(prev =>
+      prev.includes(scope) ? prev.filter(s => s !== scope) : [...prev, scope]
     )
   }
 
   const resetFilters = () => {
     setSelectedTools([])
-    setSelectedTopics([])
+    setSelectedScopes([])
   }
 
   return (
@@ -95,7 +96,7 @@ export default function ArchiveLayout({
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main content */}
           <div className="lg:col-span-2">
-            <ul className="space-y-4">
+            <ul className="space-y-8">
               {filteredItems.map(item => {
                 const isAbsolute =
                   item.slug.startsWith('http://') || item.slug.startsWith('https://')
@@ -106,21 +107,41 @@ export default function ArchiveLayout({
                   : item.slug
                 const date = item.date
 
+                const hasImage = item.image && item.image.trim() !== ''
                 const content = (
-                  <div>
-                    <div className="flex items-baseline gap-3">
-                      <span className="text-foreground hover:underline underline-offset-4">
-                        {item.title}
-                      </span>
-                      {date ? (
-                        <span className="text-xs text-muted-foreground">{date}</span>
+                  <div className="space-y-4">
+                    {hasImage && (
+                      <div className="w-full overflow-hidden rounded-lg border border-border">
+                        <img
+                          src={item.image}
+                          alt={item.title}
+                          className="w-full h-auto object-cover"
+                        />
+                      </div>
+                    )}
+                    <div className="space-y-2">
+                      <div className="flex items-baseline gap-3 flex-wrap">
+                        <span className="text-foreground hover:underline underline-offset-4 font-medium">
+                          {item.title}
+                        </span>
+                        {item.scope && (
+                          <span className="text-xs text-muted-foreground font-medium">{item.scope}</span>
+                        )}
+                        {date ? (
+                          <span className="text-xs text-muted-foreground">{date}</span>
+                        ) : null}
+                      </div>
+                      {item.description ? (
+                        <p className="text-sm text-muted-foreground leading-relaxed">
+                          {item.description}
+                        </p>
                       ) : null}
+                      {item.tools && item.tools.length > 0 && (
+                        <div className="text-xs text-muted-foreground italic">
+                          {item.tools.join(', ')}
+                        </div>
+                      )}
                     </div>
-                    {item.description ? (
-                      <p className="text-sm text-muted-foreground mt-1 leading-relaxed">
-                        {item.description}
-                      </p>
-                    ) : null}
                   </div>
                 )
 
@@ -172,22 +193,22 @@ export default function ArchiveLayout({
                   </div>
                 )}
 
-                {/* Topics filter */}
-                {allTopics.length > 0 && (
+                {/* Scope filter */}
+                {allScopes.length > 0 && (
                   <div>
-                    <h3 className="text-sm font-medium text-foreground mb-3">Topics</h3>
+                    <h3 className="text-sm font-medium text-foreground mb-3">Scope</h3>
                     <div className="flex flex-wrap gap-2">
-                      {allTopics.map(topic => (
+                      {allScopes.map(scope => (
                         <button
-                          key={topic}
-                          onClick={() => toggleTopic(topic)}
+                          key={scope}
+                          onClick={() => toggleScope(scope)}
                           className={`text-xs px-2.5 py-1 rounded-full border transition-colors ${
-                            selectedTopics.includes(topic)
+                            selectedScopes.includes(scope)
                               ? 'bg-foreground/10 border-foreground/30 text-foreground'
                               : 'bg-background border-border text-muted-foreground hover:text-foreground'
                           }`}
                         >
-                          {topic}
+                          {scope}
                         </button>
                       ))}
                     </div>
@@ -195,7 +216,7 @@ export default function ArchiveLayout({
                 )}
 
                 {/* Reset filters */}
-                {(selectedTools.length > 0 || selectedTopics.length > 0) && (
+                {(selectedTools.length > 0 || selectedScopes.length > 0) && (
                   <button
                     onClick={resetFilters}
                     className="text-xs text-muted-foreground hover:text-foreground underline"

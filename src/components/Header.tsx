@@ -8,7 +8,7 @@ interface HeaderProps {
 
 export default function Header({ activeSection, onNavigate }: HeaderProps) {
   return (
-    <header className="lg:w-[45%] lg:sticky lg:top-0 lg:h-screen lg:flex lg:flex-col lg:justify-between lg:py-24">
+    <header className="pt-8 lg:w-[45%] lg:sticky lg:top-0 lg:h-screen lg:flex lg:flex-col lg:justify-between lg:py-24 lg:pt-24">
       <div>
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
           Christian Montebon
