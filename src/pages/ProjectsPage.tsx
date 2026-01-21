@@ -5,6 +5,9 @@ export default function ProjectsPage() {
   const items = projects.map(p => ({
     title: p.title,
     slug: p.url, // external link
+    description: p.description,
+    topics: p.topics,
+    tools: p.tools,
   }))
 
   return (
@@ -12,6 +15,7 @@ export default function ProjectsPage() {
       title="Projects"
       description="Selected work. Simple links, no fluff."
       items={items}
+      showFilters={true}
     />
   )
 }
