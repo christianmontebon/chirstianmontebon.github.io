@@ -38,3 +38,4 @@ fi
 
 mysql $DB_NAME < $SQL_FILE
 echo "Import done."
+```
