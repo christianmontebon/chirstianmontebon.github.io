@@ -1,5 +1,6 @@
 import { ArrowUpRight } from 'lucide-react'
 import { experiences } from '../data/experiences'
+import Tag from './Tag'
 
 interface ExperienceCardProps {
   experience: (typeof experiences)[0]
@@ -34,13 +35,8 @@ export default function ExperienceCard({
             {experience.description}
           </p>
           <div className="flex flex-wrap gap-2 mt-3">
-            {experience.technologies.map(tech => (
-              <span
-                key={tech}
-                className="text-xs px-2.5 py-1 rounded-full bg-foreground/10 text-foreground/70"
-              >
-                {tech}
-              </span>
+            {experience.technologies.map(technology => (
+              <Tag key={technology}>{technology}</Tag>
             ))}
           </div>
         </div>
