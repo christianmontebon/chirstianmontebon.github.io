@@ -8,11 +8,11 @@ interface TagProps {
 export default function Tag({ children, className }: TagProps) {
   const baseClasses =
     'relative inline-flex items-center text-xs px-2.5 py-1 rounded-full ' +
-    'text-foreground/80 border border-foreground/20 ' +
-    'backdrop-blur-md backdrop-saturate-150 shadow-sm ' +
-    'bg-gradient-to-br from-white/20 via-white/10 to-white/5 ' +
-    'dark:from-white/10 dark:via-white/5 dark:to-white/0 ' +
-    'transition-colors hover:from-white/25 hover:to-white/10'
+    'text-foreground/85 border border-emerald-400/30 dark:border-emerald-300/25 ' +
+    'backdrop-blur-md backdrop-saturate-150 ' +
+    'bg-gradient-to-br from-emerald-400/15 via-cyan-400/10 to-sky-400/15 ' +
+    'shadow-[0_0_8px_rgba(56,189,248,0.25)] ' +
+    'transition-colors hover:from-emerald-400/25 hover:to-sky-400/20 hover:shadow-[0_0_14px_rgba(56,189,248,0.35)]'
 
   return <span className={`${baseClasses} ${className ?? ''}`}>{children}</span>
 }
