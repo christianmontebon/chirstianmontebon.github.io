@@ -2,49 +2,76 @@ import helloWorldRaw from './notes/hello-world.md?raw'
 import simpleBashScriptToImportDatabaseSafelyRaw from './notes/simple-bash-script-to-import-database-safely.md?raw'
 import howIBuildThingsRaw from './notes/how-i-build-things.md?raw'
 import usingAIWithoutLosingControlRaw from './notes/using-ai-without-losing-control.md?raw'
-import { slugFromPath } from '../utils/slug'
+
+const NOTES_DIR = 'data/notes'
+
+function filenameToTitle(filename: string): string {
+  return filename
+    .replace(/\.md$/, '')
+    .split('-')
+    .map(word => word.charAt(0).toLowerCase() + word.slice(1))
+    .join(' ')
+}
+
+type NoteInput = {
+  filename: string
+  tags: string[]
+  date: string
+  content: string
+}
+
+const noteInputs: NoteInput[] = [
+  {
+    filename: 'hello-world.md',
+    tags: ['intro', 'personal'],
+    date: '2026-01-01',
+    content: helloWorldRaw,
+  },
+  {
+    filename: 'simple-bash-script-to-import-database-safely.md',
+    tags: ['tutorial'],
+    date: '2026-01-13',
+    content: simpleBashScriptToImportDatabaseSafelyRaw,
+  },
+  {
+    filename: 'how-i-build-things.md',
+    tags: ['thoughts'],
+    date: '2026-01-07',
+    content: howIBuildThingsRaw,
+  },
+  {
+    filename: 'using-ai-without-losing-control.md',
+    tags: ['thoughts'],
+    date: '2026-01-07',
+    content: usingAIWithoutLosingControlRaw,
+  },
+]
 
 export type Note = {
   path: string
   title: string
   tags: string[]
   slug: string
+  date: string
 }
 
-export const notes: Note[] = [
-  {
-    path: 'data/notes/hello-world.md',
-    title: 'Hello World',
-    tags: ['intro', 'personal'],
-    slug: slugFromPath('data/notes/hello-world.md'),
-  },
-  {
-    path: 'data/notes/simple-bash-script-to-import-database-safely.md',
-    title: 'Simple Bash Script to Import Database Safely',
-    tags: ['demo', 'formatting'],
-    slug: slugFromPath(
-      'data/notes/simple-bash-script-to-import-database-safely.md'
-    ),
-  },
-  {
-    path: 'data/notes/how-i-build-things.md',
-    title: 'How I Build Things',
-    tags: ['demo', 'formatting'],
-    slug: slugFromPath('data/notes/how-i-build-things.md'),
-  },
-  {
-    path: 'data/notes/using-ai-without-losing-control.md',
-    title: 'Using AI Without Losing Control',
-    tags: ['demo', 'formatting'],
-    slug: slugFromPath('data/notes/using-ai-without-losing-control.md'),
-  },
-]
+export const notes: Note[] = noteInputs.map(input => {
+  const path = `${NOTES_DIR}/${input.filename}`
+  const slug = input.filename.replace(/\.md$/, '')
+  const title = filenameToTitle(input.filename)
+  return {
+    path,
+    title,
+    tags: input.tags,
+    date: input.date,
+    slug,
+  }
+})
 
-export const noteContentByPath: Record<string, string> = {
-  'data/notes/hello-world.md': helloWorldRaw,
-  'data/notes/simple-bash-script-to-import-database-safely.md':
-    simpleBashScriptToImportDatabaseSafelyRaw,
-  'data/notes/how-i-build-things.md': howIBuildThingsRaw,
-  'data/notes/using-ai-without-losing-control.md':
-    usingAIWithoutLosingControlRaw,
-}
+export const noteContentByPath: Record<string, string> = noteInputs.reduce(
+  (acc, input) => {
+    acc[`${NOTES_DIR}/${input.filename}`] = input.content
+    return acc
+  },
+  {} as Record<string, string>
+)

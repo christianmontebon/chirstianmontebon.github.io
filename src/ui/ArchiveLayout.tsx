@@ -8,6 +8,7 @@ interface ArchiveItem {
   description?: string
   scope?: string
   tools?: string[]
+  tags?: string[]
   image?: string
 }
 
@@ -16,7 +17,7 @@ interface ArchiveLayoutProps {
   description?: string
   items: ArchiveItem[]
   basePath?: string // when provided, href becomes `${basePath}/${slug}` unless slug is an absolute URL
-  showFilters?: boolean // enable filtering by scope/tools
+  showFilters?: boolean // enable filtering by scope/tools/tags
 }
 
 export default function ArchiveLayout({
@@ -28,8 +29,9 @@ export default function ArchiveLayout({
 }: ArchiveLayoutProps) {
   const [selectedTools, setSelectedTools] = useState<string[]>([])
   const [selectedScopes, setSelectedScopes] = useState<string[]>([])
+  const [selectedTags, setSelectedTags] = useState<string[]>([])
 
-  // Extract all unique tools and scopes
+  // Extract all unique tools, scopes, and tags
   const allTools = useMemo(() => {
     const tools = new Set<string>()
     items.forEach(item => {
@@ -44,6 +46,14 @@ export default function ArchiveLayout({
       if (item.scope) scopes.add(item.scope)
     })
     return Array.from(scopes).sort()
+  }, [items])
+
+  const allTags = useMemo(() => {
+    const tags = new Set<string>()
+    items.forEach(item => {
+      item.tags?.forEach(tag => tags.add(tag))
+    })
+    return Array.from(tags).sort()
   }, [items])
 
   // Filter items based on selected filters
@@ -63,9 +73,16 @@ export default function ArchiveLayout({
       ) {
         return false
       }
+      // If tags are selected, item must have at least one selected tag
+      if (
+        selectedTags.length > 0 &&
+        !item.tags?.some(tag => selectedTags.includes(tag))
+      ) {
+        return false
+      }
       return true
     })
-  }, [items, selectedTools, selectedScopes])
+  }, [items, selectedTools, selectedScopes, selectedTags])
 
   const toggleTool = (tool: string) => {
     setSelectedTools(prev =>
@@ -79,9 +96,16 @@ export default function ArchiveLayout({
     )
   }
 
+  const toggleTag = (tag: string) => {
+    setSelectedTags(prev =>
+      prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
+    )
+  }
+
   const resetFilters = () => {
     setSelectedTools([])
     setSelectedScopes([])
+    setSelectedTags([])
   }
 
   return (
@@ -155,6 +179,12 @@ export default function ArchiveLayout({
                       {item.tools && item.tools.length > 0 && (
                         <div className="text-xs text-muted-foreground italic">
                           {item.tools.join(', ')}
+                        </div>
+                      )}
+                      {item.tags && item.tags.length > 0 && (
+                        <div className="text-xs text-muted-foreground italic mt-2">
+                          <span className="font-medium">tags:</span>{' '}
+                          {item.tags.join(', ')}
                         </div>
                       )}
                     </div>
@@ -235,8 +265,34 @@ export default function ArchiveLayout({
                   </div>
                 )}
 
+                {/* Tags filter */}
+                {allTags.length > 0 && (
+                  <div>
+                    <h3 className="text-sm font-medium text-foreground mb-3">
+                      Tags
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      {allTags.map(tag => (
+                        <button
+                          key={tag}
+                          onClick={() => toggleTag(tag)}
+                          className={`text-xs px-2.5 py-1 rounded-full border transition-colors ${
+                            selectedTags.includes(tag)
+                              ? 'bg-foreground/10 border-foreground/30 text-foreground'
+                              : 'bg-background border-border text-muted-foreground hover:text-foreground'
+                          }`}
+                        >
+                          {tag}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 {/* Reset filters */}
-                {(selectedTools.length > 0 || selectedScopes.length > 0) && (
+                {(selectedTools.length > 0 ||
+                  selectedScopes.length > 0 ||
+                  selectedTags.length > 0) && (
                   <button
                     onClick={resetFilters}
                     className="text-xs text-muted-foreground hover:text-foreground underline"

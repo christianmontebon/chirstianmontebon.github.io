@@ -38,7 +38,8 @@ export default function MarkdownRenderer() {
 
   const { data, content } = parsed
   const title = match?.title ?? String(data.title ?? slug)
-  const date = String(data.date ?? '')
+  const date = match?.date || ''
+  const tags = match?.tags || []
 
   // Allow highlight.js classes and language-* on pre/code
   const schema: any = {
@@ -62,17 +63,35 @@ export default function MarkdownRenderer() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-3xl mx-auto px-6 py-10">
-        <header className="mb-8">
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground">
-            {title}
-          </h1>
-          {date ? (
-            <p className="text-sm text-muted-foreground mt-2">{date}</p>
-          ) : null}
+      <div className="max-w-4xl mx-auto px-6 py-16">
+        <header className="mb-10">
+          <div className="flex items-center justify-between mb-3">
+            <h1 className="text-3xl font-semibold tracking-tight text-foreground">
+              {title}
+            </h1>
+            <Link
+              to="/notes"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors italic underline"
+            >
+              back to notes
+            </Link>
+          </div>
+          {(date || tags.length > 0) && (
+            <div className="space-y-2">
+              {date && (
+                <p className="text-sm text-muted-foreground">{date}</p>
+              )}
+              {tags.length > 0 && (
+                <p className="text-xs text-muted-foreground italic">
+                  <span className="font-medium">tags:</span>{' '}
+                  {tags.join(', ')}
+                </p>
+              )}
+            </div>
+          )}
         </header>
 
-        <article className="text-foreground">
+        <article className="text-foreground space-y-6">
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             rehypePlugins={[
@@ -83,24 +102,24 @@ export default function MarkdownRenderer() {
             components={{
               h1: ({ node, ...props }) => (
                 <h1
-                  className="text-3xl font-semibold tracking-tight mt-8 mb-4"
+                  className="text-3xl font-semibold tracking-tight mt-10 mb-6"
                   {...props}
                 />
               ),
               h2: ({ node, ...props }) => (
                 <h2
-                  className="text-2xl font-semibold tracking-tight mt-8 mb-3"
+                  className="text-2xl font-semibold tracking-tight mt-10 mb-4"
                   {...props}
                 />
               ),
               h3: ({ node, ...props }) => (
                 <h3
-                  className="text-xl font-semibold tracking-tight mt-6 mb-3"
+                  className="text-xl font-semibold tracking-tight mt-8 mb-4"
                   {...props}
                 />
               ),
               p: ({ node, ...props }) => (
-                <p className="leading-7 mt-4 text-foreground/90" {...props} />
+                <p className="leading-7 text-foreground/90" {...props} />
               ),
               a: ({ node, ...props }) => (
                 <a
@@ -109,30 +128,30 @@ export default function MarkdownRenderer() {
                 />
               ),
               ul: ({ node, ...props }) => (
-                <ul className="list-disc pl-6 space-y-2 mt-4" {...props} />
+                <ul className="list-disc pl-6 space-y-2" {...props} />
               ),
               ol: ({ node, ...props }) => (
-                <ol className="list-decimal pl-6 space-y-2 mt-4" {...props} />
+                <ol className="list-decimal pl-6 space-y-2" {...props} />
               ),
               li: ({ node, ...props }) => (
                 <li className="leading-7" {...props} />
               ),
               blockquote: ({ node, ...props }) => (
                 <blockquote
-                  className="mt-4 border-l-2 border-border pl-4 italic text-foreground/80 bg-foreground/5 rounded"
+                  className="border-l-2 border-border pl-4 italic text-foreground/80 bg-foreground/5 rounded py-2"
                   {...props}
                 />
               ),
               img: ({ node, ...props }) => (
                 // eslint-disable-next-line jsx-a11y/alt-text
-                <img className="mt-4 rounded" {...props} />
+                <img className="rounded" {...props} />
               ),
               hr: ({ node, ...props }) => (
-                <hr className="my-8 border-border" {...props} />
+                <hr className="my-10 border-border" {...props} />
               ),
               table: ({ node, ...props }) => (
                 <table
-                  className="w-full border-collapse mt-6 text-sm"
+                  className="w-full border-collapse text-sm"
                   {...props}
                 />
               ),
@@ -173,21 +192,12 @@ export default function MarkdownRenderer() {
                   />
                 )
               },
-              pre: ({ node, ...props }) => <pre className="my-4" {...props} />,
+              pre: ({ node, ...props }) => <pre className="my-6" {...props} />,
             }}
           >
             {content}
           </ReactMarkdown>
         </article>
-
-        <div className="mt-10">
-          <Link
-            to="/notes"
-            className="text-sm hover:underline underline-offset-4"
-          >
-            ← Back to notes
-          </Link>
-        </div>
       </div>
     </div>
   )

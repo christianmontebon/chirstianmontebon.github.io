@@ -1,6 +1,5 @@
 import ArchiveLayout from '../ui/ArchiveLayout'
-import { parseFrontmatter } from '../utils/frontmatter'
-import { notes, noteContentByPath } from '../data/notes'
+import { notes } from '../data/notes'
 
 type NoteMeta = {
   title: string
@@ -10,23 +9,21 @@ type NoteMeta = {
 
 export default function NotesPage() {
   const items: NoteMeta[] = notes
-    .map(n => {
-      const raw = noteContentByPath[n.path] || ''
-      const { data } = parseFrontmatter(raw)
-      return {
-        title: n.title,
-        date: String(data.date ?? ''),
-        slug: n.slug,
-      }
-    })
+    .map(n => ({
+      title: n.title,
+      date: n.date,
+      slug: n.slug,
+      tags: n.tags,
+    }))
     .sort((a, b) => (a.date < b.date ? 1 : -1))
 
   return (
     <ArchiveLayout
       title="Notes"
-      description="Minimal, readable, and to the point."
+      description="shower thoughts and some random shits"
       items={items}
       basePath="/notes"
+      showFilters={true}
     />
   )
 }

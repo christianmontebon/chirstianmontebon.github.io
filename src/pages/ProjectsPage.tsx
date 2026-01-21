@@ -14,7 +14,7 @@ export default function ProjectsPage() {
   return (
     <ArchiveLayout
       title="Projects"
-      description="Selected work. Simple links, no fluff."
+      description="a mix of personal and collaborative work"
       items={items}
       showFilters={true}
     />
