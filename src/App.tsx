@@ -9,6 +9,8 @@ import Projects from './components/Projects'
 import { parseFrontmatter } from './utils/frontmatter'
 import { notes, noteContentByPath } from './data/notes'
 import { Link } from 'react-router-dom'
+import { footerNotes } from './data/footerNotes'
+import { useTypewriterNotes } from './hooks/useTypewriterNotes'
 
 export default function App() {
   const sectionRefs = useRef<{ [key: string]: HTMLElement | null }>({})
@@ -29,6 +31,13 @@ export default function App() {
     })
     return all.sort((a, b) => (a.date < b.date ? 1 : -1)).slice(0, 3)
   }, [])
+
+  const { text: footerNote } = useTypewriterNotes(footerNotes, {
+    typeMs: 40,
+    eraseMs: 24,
+    pauseAtFullMs: 1100,
+    startDelayMs: 400,
+  })
 
   return (
     <div className="min-h-screen bg-background">
@@ -85,9 +94,10 @@ export default function App() {
               </ul>
             </section>
 
-            <footer className="text-sm text-muted-foreground pb-24">
-              Built with curiosity, a bit of vibe coding, and a constant search
-              for better workflows.
+            <footer className="text-sm text-muted-foreground py-24">
+              <div className="mt-2 min-h-[1.25rem] italic text-[13px] text-muted-foreground/90" aria-live="polite">
+                {footerNote}
+              </div>
             </footer>
           </main>
         </div>
