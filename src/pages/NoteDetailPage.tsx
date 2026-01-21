@@ -12,11 +12,7 @@ import { notes, noteContentByPath } from '../data/notes'
 export default function NoteDetailPage() {
   const { slug = '' } = useParams()
 
-  const match = notes.find(n => {
-    const file = n.path.split('/').pop() || ''
-    const s = file.replace(/\\.md$/, '')
-    return s === slug
-  })
+  const match = notes.find(n => n.slug === slug)
   const raw = match ? noteContentByPath[match.path] : undefined
 
   const parsed = useMemo(() => {

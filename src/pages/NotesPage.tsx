@@ -13,12 +13,10 @@ export default function NotesPage() {
     .map(n => {
       const raw = noteContentByPath[n.path] || ''
       const { data } = parseFrontmatter(raw)
-      const fileName = n.path.split('/').pop() || ''
-      const slug = fileName.replace(/\\.md$/, '')
       return {
         title: n.title,
         date: String(data.date ?? ''),
-        slug,
+        slug: n.slug,
       }
     })
     .sort((a, b) => (a.date < b.date ? 1 : -1))

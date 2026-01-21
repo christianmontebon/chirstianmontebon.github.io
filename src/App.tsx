@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom'
 import { footerNotes } from './data/footerNotes'
 import { useTypewriterNotes } from './hooks/useTypewriterNotes'
 import MouseTrail from './components/MouseTrail'
+import { notePath } from './utils/slug'
 
 export default function App() {
   const sectionRefs = useRef<{ [key: string]: HTMLElement | null }>({})
@@ -22,12 +23,10 @@ export default function App() {
     const all = notes.map(n => {
       const raw = noteContentByPath[n.path] || ''
       const { data } = parseFrontmatter(raw)
-      const fileName = n.path.split('/').pop() || ''
-      const slug = fileName.replace(/\\.md$/, '')
       return {
         title: n.title,
         date: String(data.date ?? ''),
-        slug,
+        slug: n.slug,
       }
     })
     return all.sort((a, b) => (a.date < b.date ? 1 : -1)).slice(0, 3)
@@ -80,10 +79,7 @@ export default function App() {
               <ul className="mt-4 space-y-3">
                 {latestNotes.map(note => (
                   <li key={note.slug} className="py-1">
-                    <Link
-                      to={`/notes/${note.slug}`}
-                      className="flex items-baseline gap-3 group"
-                    >
+                    <Link to={notePath(note.slug)} className="flex items-baseline gap-3 group">
                       <span className="text-foreground group-hover:underline underline-offset-4">
                         {note.title}
                       </span>
