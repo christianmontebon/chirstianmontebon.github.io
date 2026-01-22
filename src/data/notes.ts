@@ -2,6 +2,7 @@ import helloWorldRaw from './notes/hello-world.md?raw'
 import simpleBashScriptToImportDatabaseSafelyRaw from './notes/simple-bash-script-to-import-database-safely.md?raw'
 import howIBuildThingsRaw from './notes/how-i-build-things.md?raw'
 import usingAIWithoutLosingControlRaw from './notes/using-ai-without-losing-control.md?raw'
+import idealVsDamageControlRaw from './notes/ideal-vs-damage-control.md?raw'
 
 const NOTES_DIR = 'data/notes'
 
@@ -44,6 +45,12 @@ const noteInputs: NoteInput[] = [
     tags: ['thoughts'],
     date: '2026-01-07',
     content: usingAIWithoutLosingControlRaw,
+  },
+  {
+    filename: 'ideal-vs-damage-control.md',
+    tags: ['thoughts'],
+    date: '2026-01-22',
+    content: idealVsDamageControlRaw,
   },
 ]
 
