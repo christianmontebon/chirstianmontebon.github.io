@@ -1,25 +1,18 @@
 import { useEffect, useRef } from 'react'
 
-type Particle = {
-  x: number
-  y: number
-  radius: number
-  life: number
-  maxLife: number
-}
-
 export default function MouseTrail() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
-  const particlesRef = useRef<Particle[]>([])
-  const lastPosRef = useRef<{ x: number; y: number } | null>(null)
+  const cursorPosRef = useRef<{ x: number; y: number } | null>(null)
   const rafRef = useRef<number | null>(null)
 
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
+    
     const ctx = canvas.getContext('2d', { alpha: true })
     if (!ctx) return
 
+    // Check for reduced motion preference
     const prefersReducedMotion = window.matchMedia(
       '(prefers-reduced-motion: reduce)'
     ).matches
@@ -39,72 +32,47 @@ export default function MouseTrail() {
     setSize()
 
     const handleMove = (e: MouseEvent) => {
-      const x = e.clientX
-      const y = e.clientY
-      const last = lastPosRef.current
-      const dist = last ? Math.hypot(x - last.x, y - last.y) : 0
-      lastPosRef.current = { x, y }
-
-      // Spawn fewer, much larger blobs (hand-sized aura)
-      const count = Math.max(1, Math.min(2, Math.floor(dist / 24)))
-      for (let i = 0; i < count; i++) {
-        const jitterX = (Math.random() - 0.5) * 2
-        const jitterY = (Math.random() - 0.5) * 2
-        particlesRef.current.push({
-          x: x + jitterX,
-          y: y + jitterY,
-          radius: 120 + Math.random() * 80, // big, hand-like footprint
-          life: 1,
-          maxLife: 1,
-        })
-      }
-      // cap max particles to avoid buildup
-      const maxParticles = 16
-      if (particlesRef.current.length > maxParticles) {
-        particlesRef.current.splice(
-          0,
-          particlesRef.current.length - maxParticles
-        )
-      }
+      cursorPosRef.current = { x: e.clientX, y: e.clientY }
     }
 
-    let lastTs = 0
-    const render = (ts: number) => {
-      const dt = Math.min(32, ts - lastTs || 16) / 1000
-      lastTs = ts
+    const handleLeave = () => {
+      // Keep the spotlight at the last position when cursor leaves
+      // Don't update cursorPosRef, so it stays where it was
+    }
+
+    const render = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-      ctx.globalCompositeOperation = 'lighter'
-      const particles = particlesRef.current
-      for (let i = particles.length - 1; i >= 0; i--) {
-        const p = particles[i]
-        p.life -= dt * 0.5 // moderate fade to keep a soft, large aura
-        if (p.life <= 0) {
-          particles.splice(i, 1)
-          continue
-        }
-        const t = p.life / p.maxLife
-        const r = p.radius * (1.0 + 0.2 * t)
+      if (cursorPosRef.current) {
+        const { x, y } = cursorPosRef.current
+        const radius = 600
 
-        const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r)
-        // emerald -> cyan -> sky palette, matching site accents
-        grad.addColorStop(0, `rgba(16, 185, 129, ${0.035 * t})`)
-        grad.addColorStop(0.5, `rgba(6, 182, 212, ${0.02 * t})`)
-        grad.addColorStop(1, `rgba(2, 132, 199, 0)`)
+        ctx.globalCompositeOperation = 'screen'
+        const grad = ctx.createRadialGradient(x, y, 0, x, y, radius)
+        // Subtle spotlight effect
+        grad.addColorStop(0, 'rgba(16, 185, 129, 0.08)')
+        grad.addColorStop(0.3, 'rgba(6, 182, 212, 0.05)')
+        grad.addColorStop(0.6, 'rgba(2, 132, 199, 0.02)')
+        grad.addColorStop(1, 'rgba(2, 132, 199, 0)')
+        
         ctx.fillStyle = grad
         ctx.beginPath()
-        ctx.arc(p.x, p.y, r, 0, Math.PI * 2)
+        ctx.arc(x, y, radius, 0, Math.PI * 2)
         ctx.fill()
+        ctx.globalCompositeOperation = 'source-over'
       }
-      ctx.globalCompositeOperation = 'source-over'
+
       rafRef.current = requestAnimationFrame(render)
     }
     rafRef.current = requestAnimationFrame(render)
 
     window.addEventListener('mousemove', handleMove, { passive: true })
+    document.addEventListener('mouseleave', handleLeave)
     window.addEventListener('resize', setSize)
+    
     return () => {
       window.removeEventListener('mousemove', handleMove)
+      document.removeEventListener('mouseleave', handleLeave)
       window.removeEventListener('resize', setSize)
       if (rafRef.current) cancelAnimationFrame(rafRef.current)
     }
@@ -113,7 +81,7 @@ export default function MouseTrail() {
   return (
     <canvas
       ref={canvasRef}
-      className="pointer-events-none fixed inset-0 z-10 opacity-[0.16] mix-blend-screen"
+      className="pointer-events-none fixed inset-0 z-10"
       aria-hidden="true"
     />
   )
