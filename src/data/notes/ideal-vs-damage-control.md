@@ -11,6 +11,7 @@ Sometimes the goal is not to change it, but to live with it responsibly.
 In an ideal world, things are simple.
 
 You can look at something and immediately understand:
+
 - what it does
 - why it exists
 - what will happen if it changes
@@ -43,6 +44,7 @@ It is about being honest with the situation and asking:
 “What is the least harmful way to move forward?”
 
 It means:
+
 - limiting unintended consequences
 - keeping things from affecting areas they shouldn’t
 - making problems obvious instead of invisible

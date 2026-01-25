@@ -22,10 +22,10 @@ export default function About({ sectionRef }: AboutProps) {
           especially when systems grow and requirements change.
         </p>
         <p>
-          Outside of work, I spend time improving my workflows, experimenting
-          with new tools, and automating small, repetitive tasks. I enjoy
-          finding practical ways to reduce friction and keep projects manageable
-          over time.
+          Outside of work, I’m Hayley’s dad. I spend most of my time with
+          family, work on small personal ideas when time allows, and try to keep
+          a healthy balance between building things and stepping away from the
+          screen.
         </p>
       </div>
     </section>
