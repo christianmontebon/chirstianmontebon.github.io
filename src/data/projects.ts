@@ -20,7 +20,7 @@ export const projects: Project[] = [
     title: 'Hayley at One – RSVP',
     description:
       'A simple, private RSVP web app for Hayley’s first birthday. Guests receive unique links per invite, can accept or decline without accounts, and are grouped by family or circle for easy headcount tracking.',
-    url: 'https://hayleyatone.com',
+    url: 'https://hayley-at-one-cms-projects-14a7cb7c.vercel.app/',
     scope: 'Side Project',
     image: '/images/projects/hayley-at-one.png',
     tools: ['React', 'Supabase', 'Next.js', 'Tailwind CSS', 'TypeScript'],
