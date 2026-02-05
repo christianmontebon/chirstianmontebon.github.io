@@ -10,7 +10,7 @@ export type Project = {
 export const projects: Project[] = [
   {
     title: 'Local Storage Manager Chrome Extension',
-    description: 'A chrome extension that allows you to manage your local storage',
+    description: 'Local Storage Manager is a developer tool for inspecting and managing browser localStorage in a dedicated, full-page workspace.',
     url: 'https://chromewebstore.google.com/detail/local-storage-manager/gecfgmjgechopncdaombkegdfhblkmog',
     scope: 'Personal',
     image: '/images/projects/localstorage-manage-chrome-ext.png',
