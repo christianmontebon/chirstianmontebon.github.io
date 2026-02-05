@@ -9,6 +9,14 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    title: 'Local Storage Manager Chrome Extension',
+    description: 'A chrome extension that allows you to manage your local storage',
+    url: 'https://chromewebstore.google.com/detail/local-storage-manager/gecfgmjgechopncdaombkegdfhblkmog',
+    scope: 'Personal',
+    image: '/images/projects/localstorage-manage-chrome-ext.png',
+    tools: ['Chrome Extension', 'Javascript'],
+  },
+  {
     title: 'christianmontebon.github.io',
     description: 'My personal website',
     url: 'https://christianmontebon.github.io',
